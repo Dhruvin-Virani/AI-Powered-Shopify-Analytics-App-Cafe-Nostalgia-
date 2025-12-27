@@ -1,5 +1,8 @@
 # AI-Powered Shopify Analytics App
 
+<img width="1903" height="1079" alt="image" src="https://github.com/user-attachments/assets/91af1a14-035d-48bd-9aaa-872feb487703" />
+
+
 ## 🚀 Overview
 
 A mini AI-powered analytics application that connects to Shopify stores, accepts natural language questions about inventory, sales, and customers, and returns business-friendly insights powered by AI.
