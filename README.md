@@ -89,13 +89,9 @@ cd /app/backend
 
 # Install Python dependencies
 pip install -r requirements.txt
-
-# Configure environment variables
-cp .env.example .env  # If not already present
-nano .env
 ```
-
-**Add your API key to `/app/backend/.env`:**
+Create .env in /backend/
+**Add your API key to `/backend/.env`:**
 
 ```env
 MONGO_URL="mongodb://localhost:27017"
@@ -105,12 +101,12 @@ CORS_ORIGINS="*"
 # Add ONE of the following:
 GEMINI_API_KEY=your_gemini_key_here
 # OR
-EMERGENT_LLM_KEY=your_emergent_key_here
+OPENAI_API_KEY=your_openai_key_here
 ```
 
 **Get API Keys:**
 - **Gemini**: https://aistudio.google.com/apikey (Free tier available)
-- **Emergent LLM**: Built-in universal key (profile → universal key)
+- **OPENAI**: https://platform.openai.com/api-keys
 
 ### 2. Frontend Setup
 
@@ -121,22 +117,16 @@ cd /app/frontend
 yarn install
 
 # Frontend .env is already configured
-# No changes needed to /app/frontend/.env
+# No changes needed to /frontend/.env
 ```
-
-### 3. Start Services
-
 ```bash
-# Restart all services
-sudo supervisorctl restart all
 
-# Check status
-sudo supervisorctl status
+yarn start
+#or
+npm start
 
-# View logs
-tail -f /var/log/supervisor/backend.err.log
-tail -f /var/log/supervisor/frontend.err.log
 ```
+
 
 **Services:**
 - Backend: http://localhost:8001
@@ -167,15 +157,6 @@ tail -f /var/log/supervisor/frontend.err.log
 - "How many repeat customers do I have?"
 
 ---
-
-## 🔌 API Documentation
-
-### Base URL
-```
-http://localhost:8001/api
-```
-
-### Endpoints
 
 #### 1. Ask Question (Main Analytics Endpoint)
 
@@ -386,7 +367,7 @@ curl http://localhost:8001/api/v1/example-questions | jq
 ### Backend
 - **Framework**: FastAPI (Python)
 - **Database**: MongoDB with Motor (async driver)
-- **LLM Integration**: emergentintegrations library
+- **LLM Integration**: Gemini / GPT-5-mini
 - **AI Models**: Google Gemini 2.5 Flash / OpenAI GPT-5-mini
 
 ### Frontend
@@ -424,114 +405,3 @@ The application includes realistic mock Shopify data:
 
 ---
 
-## 🚨 Troubleshooting
-
-### Backend won't start
-```bash
-# Check logs
-tail -n 50 /var/log/supervisor/backend.err.log
-
-# Verify Python dependencies
-cd /app/backend && pip install -r requirements.txt
-
-# Restart backend
-sudo supervisorctl restart backend
-```
-
-### Frontend won't start
-```bash
-# Check logs
-tail -n 50 /var/log/supervisor/frontend.err.log
-
-# Reinstall dependencies
-cd /app/frontend && yarn install
-
-# Restart frontend
-sudo supervisorctl restart frontend
-```
-
-### API returns errors
-
-**"EMERGENT_LLM_KEY not found"**
-- Add `GEMINI_API_KEY` or `EMERGENT_LLM_KEY` to `/app/backend/.env`
-- Restart backend: `sudo supervisorctl restart backend`
-
-**"Generative Language API has not been used"**
-- Enable Gemini API in Google Cloud Console
-- Or get a new API key from https://aistudio.google.com/apikey
-
-**"Rate limit exceeded"**
-- Check API key quota/balance
-- Switch to a different model (modify `llm_service.py`)
-
-### Database connection issues
-```bash
-# Check MongoDB status
-sudo supervisorctl status mongodb
-
-# Restart MongoDB
-sudo supervisorctl restart mongodb
-```
-
----
-
-## 🎯 Evaluation Criteria Met
-
-✅ **Correctness of Shopify integration** - Mock data service ready for real API
-✅ **Quality of API design** - RESTful, well-documented, proper error handling
-✅ **Agent reasoning clarity** - 4-step workflow with logging and metadata
-✅ **Practical data handling** - Robust error handling, confidence scores
-✅ **Code readability** - Clean structure, documented, type hints
-✅ **Simple explanations** - Business-friendly language, no jargon
-
----
-
-## 📈 Future Enhancements
-
-**Bonus Features to Implement:**
-- [ ] Real Shopify OAuth integration
-- [ ] Response caching for repeated questions
-- [ ] Conversation memory for follow-up questions
-- [ ] ShopifyQL validation layer
-- [ ] Metrics dashboard with charts
-- [ ] Retry & fallback logic for failed queries
-- [ ] Multi-store support
-- [ ] Export results to CSV/PDF
-
----
-
-## 📄 License
-
-This project was built as an assignment to demonstrate AI-powered analytics capabilities.
-
----
-
-## 👥 Support
-
-For questions or issues:
-1. Check the troubleshooting section
-2. Review backend logs: `/var/log/supervisor/backend.err.log`
-3. Review frontend logs: `/var/log/supervisor/frontend.err.log`
-
----
-
-## 🎉 Quick Start Summary
-
-```bash
-# 1. Add API key to backend/.env
-echo "GEMINI_API_KEY=your_key_here" >> /app/backend/.env
-
-# 2. Restart services
-sudo supervisorctl restart all
-
-# 3. Test API
-curl http://localhost:8001/api/
-
-# 4. Open frontend
-# Navigate to your preview URL in browser
-
-# 5. Ask a question!
-# Try: "What were my top 5 selling products last week?"
-```
-
-**That's it! You're ready to use AI-powered Shopify analytics! 🚀**
