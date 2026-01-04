@@ -111,6 +111,12 @@ OPENAI_API_KEY=your_openai_key_here
 - **Gemini**: https://aistudio.google.com/apikey (Free tier available)
 - **OPENAI**: https://platform.openai.com/api-keys
 
+```bash
+# Run the backend server
+uvicorn server:app --reload --port 8001
+```
+
+
 ### 2. Frontend Setup
 
 ```bash
